@@ -243,30 +243,30 @@ The shortest streak is of length 1.
 <p>While we don’t have any data from a shooter we know to have independent shots, that sort of data is very easy to simulate in R. In a simulation, you set the ground rules of a random process and then the computer uses random numbers to generate an outcome that adheres to those rules. As a simple example, you can simulate flipping a fair coin with the following.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">coin_outcomes &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;heads&quot;</span>, <span class="st">&quot;tails&quot;</span>)
 <span class="kw">sample</span>(coin_outcomes, <span class="dt">size =</span> <span class="dv">1</span>, <span class="dt">replace =</span> <span class="ot">TRUE</span>)</code></pre></div>
-<pre><code>## [1] &quot;tails&quot;</code></pre>
+<pre><code>## [1] &quot;heads&quot;</code></pre>
 <p>The vector <code>outcomes</code> can be thought of as a hat with two slips of paper in it: one slip says <code>heads</code> and the other says <code>tails</code>. The function <code>sample</code> draws one slip from the hat and tells us if it was a head or a tail.</p>
 <p>Run the second command listed above several times. Just like when flipping a coin, sometimes you’ll get a heads, sometimes you’ll get a tails, but in the long run, you’d expect to get roughly equal numbers of each.</p>
 <p>If you wanted to simulate flipping a fair coin 100 times, you could either run the function 100 times or, more simply, adjust the <code>size</code> argument, which governs how many samples to draw (the <code>replace = TRUE</code> argument indicates we put the slip of paper back in the hat before drawing again). Save the resulting vector of heads and tails in a new object called <code>sim_fair_coin</code>.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">sim_fair_coin &lt;-<span class="st"> </span><span class="kw">sample</span>(coin_outcomes, <span class="dt">size =</span> <span class="dv">100</span>, <span class="dt">replace =</span> <span class="ot">TRUE</span>)</code></pre></div>
 <p>To view the results of this simulation, type the name of the object and then use <code>table</code> to count up the number of heads and tails.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">sim_fair_coin</code></pre></div>
-<pre><code>##   [1] &quot;heads&quot; &quot;heads&quot; &quot;heads&quot; &quot;tails&quot; &quot;tails&quot; &quot;tails&quot; &quot;tails&quot; &quot;tails&quot;
-##   [9] &quot;tails&quot; &quot;tails&quot; &quot;heads&quot; &quot;tails&quot; &quot;heads&quot; &quot;heads&quot; &quot;heads&quot; &quot;tails&quot;
-##  [17] &quot;heads&quot; &quot;tails&quot; &quot;tails&quot; &quot;heads&quot; &quot;tails&quot; &quot;tails&quot; &quot;tails&quot; &quot;heads&quot;
-##  [25] &quot;heads&quot; &quot;heads&quot; &quot;tails&quot; &quot;heads&quot; &quot;heads&quot; &quot;tails&quot; &quot;heads&quot; &quot;tails&quot;
-##  [33] &quot;tails&quot; &quot;heads&quot; &quot;tails&quot; &quot;tails&quot; &quot;heads&quot; &quot;heads&quot; &quot;tails&quot; &quot;tails&quot;
-##  [41] &quot;tails&quot; &quot;tails&quot; &quot;tails&quot; &quot;heads&quot; &quot;tails&quot; &quot;heads&quot; &quot;heads&quot; &quot;heads&quot;
-##  [49] &quot;tails&quot; &quot;heads&quot; &quot;heads&quot; &quot;heads&quot; &quot;tails&quot; &quot;tails&quot; &quot;tails&quot; &quot;heads&quot;
-##  [57] &quot;heads&quot; &quot;tails&quot; &quot;tails&quot; &quot;heads&quot; &quot;heads&quot; &quot;tails&quot; &quot;heads&quot; &quot;tails&quot;
-##  [65] &quot;heads&quot; &quot;tails&quot; &quot;heads&quot; &quot;heads&quot; &quot;tails&quot; &quot;tails&quot; &quot;tails&quot; &quot;heads&quot;
-##  [73] &quot;heads&quot; &quot;heads&quot; &quot;tails&quot; &quot;heads&quot; &quot;tails&quot; &quot;heads&quot; &quot;heads&quot; &quot;heads&quot;
-##  [81] &quot;tails&quot; &quot;tails&quot; &quot;heads&quot; &quot;heads&quot; &quot;tails&quot; &quot;tails&quot; &quot;tails&quot; &quot;tails&quot;
-##  [89] &quot;heads&quot; &quot;tails&quot; &quot;tails&quot; &quot;heads&quot; &quot;heads&quot; &quot;tails&quot; &quot;tails&quot; &quot;tails&quot;
-##  [97] &quot;heads&quot; &quot;tails&quot; &quot;heads&quot; &quot;heads&quot;</code></pre>
+<pre><code>##   [1] &quot;tails&quot; &quot;heads&quot; &quot;heads&quot; &quot;tails&quot; &quot;tails&quot; &quot;heads&quot; &quot;heads&quot; &quot;heads&quot;
+##   [9] &quot;tails&quot; &quot;tails&quot; &quot;tails&quot; &quot;heads&quot; &quot;tails&quot; &quot;tails&quot; &quot;tails&quot; &quot;tails&quot;
+##  [17] &quot;heads&quot; &quot;tails&quot; &quot;tails&quot; &quot;heads&quot; &quot;heads&quot; &quot;heads&quot; &quot;tails&quot; &quot;heads&quot;
+##  [25] &quot;tails&quot; &quot;tails&quot; &quot;heads&quot; &quot;heads&quot; &quot;tails&quot; &quot;heads&quot; &quot;heads&quot; &quot;heads&quot;
+##  [33] &quot;tails&quot; &quot;heads&quot; &quot;tails&quot; &quot;tails&quot; &quot;tails&quot; &quot;heads&quot; &quot;heads&quot; &quot;tails&quot;
+##  [41] &quot;heads&quot; &quot;tails&quot; &quot;heads&quot; &quot;tails&quot; &quot;heads&quot; &quot;tails&quot; &quot;tails&quot; &quot;heads&quot;
+##  [49] &quot;heads&quot; &quot;tails&quot; &quot;tails&quot; &quot;heads&quot; &quot;heads&quot; &quot;heads&quot; &quot;tails&quot; &quot;tails&quot;
+##  [57] &quot;heads&quot; &quot;tails&quot; &quot;heads&quot; &quot;heads&quot; &quot;tails&quot; &quot;heads&quot; &quot;heads&quot; &quot;tails&quot;
+##  [65] &quot;tails&quot; &quot;heads&quot; &quot;tails&quot; &quot;heads&quot; &quot;heads&quot; &quot;heads&quot; &quot;heads&quot; &quot;heads&quot;
+##  [73] &quot;tails&quot; &quot;tails&quot; &quot;tails&quot; &quot;heads&quot; &quot;tails&quot; &quot;tails&quot; &quot;heads&quot; &quot;tails&quot;
+##  [81] &quot;heads&quot; &quot;heads&quot; &quot;tails&quot; &quot;heads&quot; &quot;heads&quot; &quot;heads&quot; &quot;heads&quot; &quot;heads&quot;
+##  [89] &quot;tails&quot; &quot;tails&quot; &quot;heads&quot; &quot;tails&quot; &quot;tails&quot; &quot;heads&quot; &quot;heads&quot; &quot;tails&quot;
+##  [97] &quot;tails&quot; &quot;tails&quot; &quot;tails&quot; &quot;heads&quot;</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">table</span>(sim_fair_coin)</code></pre></div>
 <pre><code>## sim_fair_coin
 ## heads tails 
-##    48    52</code></pre>
+##    51    49</code></pre>
 <p>Since there are only two elements in <code>outcomes</code>, the probability that we “flip” a coin and it lands heads is 0.5. Say we’re trying to simulate an unfair coin that we know only lands heads 20% of the time. We can adjust for this by adding an argument called <code>prob</code>, which provides a vector of two probability weights.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">sim_unfair_coin &lt;-<span class="st"> </span><span class="kw">sample</span>(coin_outcomes, <span class="dt">size =</span> <span class="dv">100</span>, <span class="dt">replace =</span> <span class="ot">TRUE</span>, 
                           <span class="dt">prob =</span> <span class="kw">c</span>(<span class="fl">0.2</span>, <span class="fl">0.8</span>))</code></pre></div>
