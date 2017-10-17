@@ -3,6 +3,7 @@ title: "Inference for numerical data"
 output: statsr:::statswithr_lab
 ---
 
+
 <div id="instructions">
 Complete all **Exercises**, and submit answers to **Questions** on the Coursera 
 platform.
