@@ -1,0 +1,142 @@
+---
+title: "Exploring the BRFSS data"
+output: 
+  html_document: 
+    fig_height: 4
+    highlight: pygments
+    theme: spacelab
+---
+
+## Setup
+Before we start the Exploratory Data Analysis(EDA), we should first load the packages that would be required along the way for Analysis process, and the data on which we would be working on. In this case, the packages being dplyr(which provides us with the basic data manipulation tools) and ggplot2(which provides us with data ploting tools for Visualization), and the data being The Behavioral Risk Factor Surveillance System (BRFSS) - 2013.
+
+
+### Load packages
+First we load the packages previously installed on RStudio using the library() function.
+```{r load-packages, message = FALSE}
+library(ggplot2)
+library(dplyr)
+```
+
+### Load data
+Then we load the The Behavioral Risk Factor Surveillance System (BRFSS) - 2013 data stored in the same directory where we 'll be saving our progress on the markdown file, using the load() function.
+```{r load-data}
+load("brfss2013.RData")
+```
+
+
+
+* * *
+
+## Part 1: Data
+Now before, we start the Analysis process, we should first analyse the data properly, using the codebook or with the additional information we can find using other sources. In our case The Behavioral Risk Factor Surveillance System (BRFSS) - 2013 is a collaborative <u>observatory</u> project between all of the states in the United States (US) and participating US territories and the Centers for Disease Control and Prevention (CDC). The BRFSS is administered and supported by CDC's Population Health Surveillance Branch, under the Division of Population Health at the National Center for Chronic Disease Prevention and Health Promotion. BRFSS is an ongoing surveillance system designed to measure behavioral risk factors for the non-institutionalized adult population (18 years of age and older) residing in the US. The BRFSS was initiated in 1984, with 15 states collecting surveillance data on risk behaviors through monthly telephone interviews. Over time, the number of states participating in the survey increased; by 2001, 50 states, the District of Columbia, Puerto Rico, Guam, and the US Virgin Islands were participating in the BRFSS. Today, all 50 states, the District of Columbia, Puerto Rico, and Guam collect data annually and American Samoa, Federated States of Micronesia, and Palau collect survey data over a limited point- in-time (usually one to three months). In this document, the term "state" is used to refer to all areas participating in BRFSS, including the District of Columbia, Guam, and the Commonwealth of Puerto Rico.<br>
+The BRFSS objective is to collect uniform, state-specific data on preventive health practices and risk behaviors that are linked to chronic diseases, injuries, and preventable infectious diseases that affect the adult population. Factors assessed by the BRFSS in 2013 include tobacco use, HIV/AIDS knowledge and prevention, exercise, immunization, health status, healthy days - health-related quality of life, health care access, inadequate sleep, hypertension awareness, cholesterol awareness, chronic health conditions, alcohol consumption, fruits and vegetables consumption, arthritis burden, and seatbelt use.  <br>
+Health characteristics estimated from the BRFSS pertain to the non-institutionalized adult population, aged 18 years or older, who reside in the US. In 2013, additional question sets were included as optional modules to provide a measure for several childhood health and wellness indicators, including asthma prevalence for people aged 17 years or younger.<br>
+<u>Data Summary</u> - As the data provided here is Observational and the people selection is done at random, the results we find for the questions that we might contemplate may be generalized to the poppulation. <br> Note : Since 2011, BRFSS conducts both landline telephone- and cellular telephone-based surveys.In conducting the BRFSS landline telephone survey, interviewers collect data from a randomly selected adult in a household. In conducting the  cellular telephone version, It is done using a cellular telephone with someone who resides in a private residence or college housing.<u> So the data may be biased towards the people who can afford the services of a mobile and have a household or are currently in college accomodations. People who cann't afford the offerings like a mobile or college education or dont have a house are not included. Hence the results might not be generalized on that percent of the population.</u><br>
+
+References<br>
+BRFSS web site: http://www.cdc.gov/brfss/ <br>
+BRFSS Questionnaire (Mandatory and Optional Modules): http://www.cdc.gov/brfss/questionnaires/pdf-ques/2013%20BRFSS_English.pdf
+<br>BRFSS Codebook: http://www.cdc.gov/brfss/annual_data/2013/pdf/CODEBOOK13_LLCP.pdf
+<br>BRFSS Guide to Calculated Variables: http://www.cdc.gov/brfss/annual_data/2013/pdf/2013_Calculated_Variables_Version15.pdf
+<br>BRFSS Guide to Optional Modules Used, by State: http://apps.nccd.cdc.gov/BRFSSModules/ModByState.asp?Yr=2013 <br>
+
+
+* * *
+
+## Part 2: Research questions
+The first step in the EDA is to contemplate some questions by examining the codebook(or appendix at the end, which provides details of variables in the data). By looking at the codebook, we then try to find the variables that might be related to each other somehow, hence coming up with some questions that may be answered by the EDA process.<br><br>
+**Research quesion 1:**
+Looking at the data provided, we first consider 2 variables, specifically <u>veteran3</u> - "Ever served on active duty in the United States Armed Forces, either in the regular military or in a National Guard or military reserve unit?" and <u>genhlth</u> - "General Health Status". People belonging to the veteran community, have done a great service for the Country and should be taken care of by the Country itself too. <u>Considering the veteran status we try to find out if they face general health issues or are usually fit.</u> These results then can be used for futher analysis, so that if any special care required, can be delivered.<br> 
+<br>**Research quesion 2:**
+For the second question, we try to find a relation(if any) between the Alcoholic and Tobaco Consumption (specifically <u>smokday2</u> - "Frequency Of Days Now Smoking" and <u>avedrnk2</u> - "Avg Alcoholic Drinks Per Day In Past 30 days") and the sleep time the people belonging to a specific criterion get(specifically <u>sleptim1</u> - "How Much Time Do You Sleep"). The reslts could be drawn to find a causal relationship between the above mentioned variables. <u>We try to answer the question that wether alot of alcoholic consumption and regular smoking results in sleep deprivation or not.</u> As we know that we can have a healthy body if we have a sound mind. Sometimes sleep deprivation leads to a lot of health and mental issues(like stress and dipression). So if a relationship is found, it can be used to spread awareness and overall improve the quality of life.<br> 
+<br>**Research quesion 3:**
+In the third question we try to relate the variable <u>genhlth</u> - "the general health status" with the daily habits one could enculcate in their everyday routine, specifically <u>exerany2</u> - "other than your regular job, did you participate in any physical activities or exercises such as running, calisthenics, golf, gardening, or walking for exercise?" and <u>fruitju1</u> - "How Many Times Did You Drink 100 Percent Pure Fruit Juices?". <u>Here we try to deduce if the introduction of a little of both of the above mentioned habits(daily exercise and regular 100% fruit juice consumption) in our daily life result in better general health status by observing the data we have in hand. </u>A lot of times these small daily habits like daily juice consumption and exercise constitute a lot towards better life quality. These habits usually do not affect the daily timeline and can easily fit in one's daily routine. So such an observational result would be very benificial for the population.<br>
+
+* * *
+
+## Part 3: Exploratory data analysis
+
+Now that we 've put up some questions that may be answered by the data we have in hand, we start the EDA process trying to tackle these questions one by one.  This task can be carried out by using the functions provided to us by the packages we loaded earlier for data manipulation and visualization.
+<hr>
+
+**Research quesion 1:**
+In the first question we are looking into the veteran status of people who have responded and then try to find out their respective general health status.<br>
+So here we need to extract the people who have reported themselves as Veteran status YES and then we try to group them along with their respective general health category. The functions used here are tunneling operator %>% , along with filter(), group_by() and summarize() functions. 
+
+```{r}
+brfss2013 %>% filter(veteran3 == "Yes") %>% group_by(genhlth) %>% summarise(count = n())
+
+```
+<br>It can also be visualized using plot() function. Before we plot the data, we save the filtered and grouped result in a new data set called <U>genhlth_vet</u> which can then be used for plotting purposes.<br> Here we use an argument ylim() in the function plot() to change the scaling of the y axis as the default scaling in the plot() is 0 to 1.<br>
+```{r}
+genhlth_vet <- brfss2013 %>% filter(veteran3 == "Yes") %>% group_by(genhlth) %>% summarise(count = n())
+plot(genhlth_vet, ylim = c(0,50000))
+```
+<br>This result can also be obtained by using ggplot() function. But before doing that we remove the NAs which show up on the ggplot() output as these values provide us with no useful information. This is done by using the na.omit() function. The plot() function omits the NAs itself. <br>
+```{r}
+genhlth_vet <- na.omit(genhlth_vet)
+ggplot(genhlth_vet , aes(x = genhlth_vet$genhlth, y = genhlth_vet$count)) + geom_point()
+
+```
+</br><u>Now we observe that nearly 45% of the veterans have reported either excellent or very good general health. This is the result we needed. </u>Now this can be futher used as Apart from these 45% of the veterans, we can do further analysis on the remaining 55% and try to find out what kind of issues they face on a daily basis and try to minimize them for better quality of life.<br>
+<hr>
+
+**Research quesion 2:**
+In the second question we are trying to find the causal relationship between regular smoking - drinking habits and the sleep deprivation, i.e. getting less sleep. For this, first we try to set up a criteria that would let us filter among people who drink and smoke regularly and the people that don't. So, let us set up a criteria where <u>smokday2</u> = Every day and <u>avedrnk2</u> = hard drinker (values between 16[min for the criteria that we 've set up] and 76[the max value]). It can be done using the operator %in% .<br>
+
+Now that we 've set up a criteria for the filter, we now decide the minimum treshhold of sleeping hours to distinguish between getting normal sleep and getting less sleep. For this we calculate  the median of the variable <u>sleptim1</u> using the median() function. Note : While calculating such statistics, we try to omit the NA values using the argument na.rm=TRUE.<br>
+After getting the median we can then use this to create a new categorical variable using mutate() function. While creating the new variable, manually getting values indivisually for all the observations would be a tiring and very time consuming task. So here we automate this process by using the ifelse() function.<br>
+```{r}
+median(brfss2013$sleptim1, na.rm = TRUE)
+brfss2013 <- brfss2013 %>% mutate(sleptim1_more = ifelse(brfss2013$sleptim1 > 7 , "YES","NO"))
+```
+<br>Now that we 've got categorical variable which can be used for grouping too, we apply the filter and extract the data.<br>
+```{r}
+brfss2013 %>% filter(smokday2 == "Every day" , avedrnk2 %in% c(16:76)) %>% group_by(sleptim1_more) %>% summarize(count=n())
+```
+<br>Now we save the filtered data into a ned dataset <u>sleepl</u> and then plot it. This time we 'll use the ggplot() function to visualize the summary statistics. It can easily be depicted by taking the count for each class against the class value.<br>
+```{r}
+sleepl<- brfss2013 %>% filter(smokday2 == "Every day" , avedrnk2 %in% c(16:76)) %>% group_by(sleptim1_more) %>% summarize(count=n())
+ggplot(sleepl , aes(x = factor(sleepl$sleptim1_more), y = sleepl$count)) + geom_point()
+
+```
+<br>Now as the NA values fitting out filter were only 3, they can be neglected as they do not help us with anything. This process can be carried out by the na.omit() function and the data can be plotted again without the NA category showing up.<br>
+
+```{r}
+
+sleepl2 <- na.omit(sleepl)
+ggplot(sleepl2 , aes(x = sleepl2$sleptim1_more, y = sleepl2$count)) + geom_point()
+```
+
+<br>Here we observe that out of the 284 people, who responded and fit the criteria of everday smoker and a hard drinker, 197 people usually sleep less than the median of the data set <u>sleptim1</u>. That is almost 69% of the people, that acoording to our classification suffer from sleep deprivation. <u> So we infer that people who smoke ever day and take in between 16 and 76 drinks per day might suffer from lack of sleep. This is the result that we needed.</u>
+<hr>
+
+**Research quesion 3:**
+In the third question, we try to visualise if the 2 variables <u>exerany2</u> and <u>fruitju1</u> which might constitute towards a better general health status. For this first we decide our filter parameters. We have a categorical variable <u>fruitju1</u> with nearly 5 levels excluding all NAs. So first we mutate a new variable <u>juice_n</u> using the variable in hand. This variable will define if people regularly drink 100% pure fruit juice or not. As the levels "0" and "300" represent never drinking 100% real fruit juice and once a month respectively, we use that as the condition for the ifelse() function to determine wether one drinks juice regularly or not.Here we define the variable levels using the %in% operator and c() function. <br>
+```{r}
+brfss2013 <- brfss2013 %>% mutate(juice_n = ifelse(brfss2013$fruitju1 %in% c("0","300"),"NO","YES"))
+```
+<br>Now we try different combinations of our filter variables at <u>exerany2</u> = Yes/No and <u>juice_n</u> = YES/NO, to see if consumption of both together boost the chances of better general health status. We group the filtered data using the variable <u>genhlth</u> and summarizing the count in each level.<br>
+```{r}
+Both <- brfss2013 %>% filter(exerany2 == "Yes", juice_n == "YES") %>% group_by(genhlth) %>% summarize(count = n())
+Juice <- brfss2013 %>% filter(exerany2 == "No", juice_n == "YES") %>% group_by(genhlth) %>% summarize(count = n())
+Exer <- brfss2013 %>% filter(exerany2 == "Yes", juice_n == "NO") %>% group_by(genhlth) %>% summarize(count = n())
+```
+<br>Now after remmoveing the NAs we First observe <u>Exer</u>(exercise = yes and juice = no) and <u>Juice</u>(exercise = no and juice = yes), the data sets we created above.<br>
+```{r}
+Exer <- na.omit(Exer) 
+Juice <- na.omit(Juice)
+Exer
+ggplot(Exer, aes(x = Exer$genhlth , y= Exer$count)) + geom_point()
+Juice
+ggplot(Juice , aes(x= Juice$genhlth, y= Juice$count)) + geom_point()
+
+```
+<br>If we compare the above data sets with the third data set <u>Both</u>(exercise = yes and juice = yes), we find that the number of observations falling under the better general health status is much more than the two variable considered alone as in <u>Exer</u> and <u>Juice</u>.<br>
+```{r}
+Both <- na.omit(Both)
+Both
+ggplot(Both, aes(x= Both$genhlth, y= Both$count)) + geom_point()
+```
+<br><u>Hence we can infer that if the habits like drinking 100% pure fruit juice regularly and doing regular physical exercise results in better general health status, with nearly 75% increase w.r.t. Exercise alone and 548% increase w.r.t Juice alone in the Excellent class only. This is the result we needed.</u><br>
